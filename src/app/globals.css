@@ -1,0 +1,11 @@
+@import "tailwindcss";
+
+body {
+  background-color: #0a0f1a;
+  color: #f3f4f6;
+}
+
+/* ReactFlow overrides for dark theme */
+.react-flow__background {
+  background-color: #0a0f1a !important;
+}
