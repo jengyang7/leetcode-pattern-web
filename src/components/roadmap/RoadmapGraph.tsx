@@ -1,19 +1,27 @@
 'use client';
 
 import { useCallback, useMemo } from 'react';
-import { ReactFlow, Background, Controls, useNodesState, useEdgesState, type NodeTypes } from '@xyflow/react';
+import { ReactFlow, Background, Controls, useNodesState, useEdgesState, type NodeTypes, type Node, type NodeMouseHandler } from '@xyflow/react';
+import { useRouter } from 'next/navigation';
 import '@xyflow/react/dist/style.css';
 import { roadmapNodes } from './nodes';
 import { roadmapEdges } from './edges';
 import { TopicNode } from './TopicNode';
 
 export default function RoadmapGraph() {
+  const router = useRouter();
   const [nodes] = useNodesState(roadmapNodes);
   const [edges] = useEdgesState(roadmapEdges);
 
   const nodeTypes: NodeTypes = useMemo(() => ({ topicNode: TopicNode }), []);
-
   const proOptions = useMemo(() => ({ hideAttribution: true }), []);
+
+  const onNodeClick: NodeMouseHandler = useCallback((_event, node) => {
+    const slug = node.data?.slug as string;
+    if (slug) {
+      router.push(`/topic/${slug}`);
+    }
+  }, [router]);
 
   return (
     <div className="h-[calc(100vh-72px)] w-full">
@@ -21,13 +29,16 @@ export default function RoadmapGraph() {
         nodes={nodes}
         edges={edges}
         nodeTypes={nodeTypes}
+        onNodeClick={onNodeClick}
         fitView
         fitViewOptions={{ padding: 0.2 }}
         proOptions={proOptions}
         nodesDraggable={false}
         nodesConnectable={false}
         elementsSelectable={false}
+        panOnDrag={false}
         panOnScroll
+        zoomOnScroll
         minZoom={0.3}
         maxZoom={1.5}
       >

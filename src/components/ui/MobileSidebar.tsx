@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { topics } from '@/data/topics';
 import { problems } from '@/data/problems';
+import { categories } from '@/data/categories';
 import { useProgress } from '@/context/ProgressContext';
 import { getTopicProgress } from '@/lib/progress';
 
@@ -48,32 +49,47 @@ export default function MobileSidebar() {
                   pathname === '/' ? 'bg-indigo-500/15 text-indigo-400' : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
                 }`}
               >
+                Home
+              </Link>
+              <Link
+                href="/roadmap"
+                className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  pathname === '/roadmap' ? 'bg-indigo-500/15 text-indigo-400' : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
+                }`}
+              >
                 Roadmap
               </Link>
-              <div className="pt-2 pb-1 px-3">
-                <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-600">Topics</span>
-              </div>
-              {topics.map(topic => {
-                const { completed, total, percentage } = getTopicProgress(topic.slug, problems, progress);
-                const isActive = pathname === `/topic/${topic.slug}`;
-                return (
-                  <Link
-                    key={topic.slug}
-                    href={`/topic/${topic.slug}`}
-                    className={`group flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
-                      isActive ? 'bg-indigo-500/15 text-indigo-400' : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
-                    }`}
-                  >
-                    <div className="flex-1 min-w-0 truncate">{topic.name}</div>
-                    <div className="flex items-center gap-1.5 shrink-0">
-                      <div className="w-12 h-1 rounded-full bg-gray-700/50 overflow-hidden">
-                        <div className="h-full rounded-full bg-emerald-500 transition-all duration-300" style={{ width: `${percentage}%` }} />
-                      </div>
-                      <span className="text-[10px] text-gray-600 tabular-nums">{completed}/{total}</span>
-                    </div>
-                  </Link>
-                );
-              })}
+
+              {categories.map(category => (
+                <div key={category.name}>
+                  <div className="pt-4 pb-1 px-3">
+                    <span className="text-[10px] font-semibold uppercase tracking-widest text-gray-600">{category.name}</span>
+                  </div>
+                  {category.slugs.map(slug => {
+                    const topic = topics.find(t => t.slug === slug);
+                    if (!topic) return null;
+                    const { completed, total, percentage } = getTopicProgress(slug, problems, progress);
+                    const isActive = pathname === `/topic/${slug}`;
+                    return (
+                      <Link
+                        key={slug}
+                        href={`/topic/${slug}`}
+                        className={`group flex items-center gap-2 rounded-lg px-3 py-2 text-sm transition-colors ${
+                          isActive ? 'bg-indigo-500/15 text-indigo-400' : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
+                        }`}
+                      >
+                        <div className="flex-1 min-w-0 truncate">{topic.name}</div>
+                        <div className="flex items-center gap-1.5 shrink-0">
+                          <div className="w-12 h-1 rounded-full bg-gray-700/50 overflow-hidden">
+                            <div className="h-full rounded-full bg-emerald-500 transition-all duration-300" style={{ width: `${percentage}%` }} />
+                          </div>
+                          <span className="text-[10px] text-gray-600 tabular-nums">{completed}/{total}</span>
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </div>
+              ))}
             </nav>
           </div>
         </>
