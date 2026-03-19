@@ -1,6 +1,17 @@
 import { Problem } from '@/types';
 
 export const problems: Problem[] = [
+  // Sorting
+  { id: 'so-1', topicSlug: 'sorting', name: 'Sort an Array', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/sort-an-array/' },
+  { id: 'so-2', topicSlug: 'sorting', name: 'Sort Colors', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/sort-colors/' },
+  { id: 'so-3', topicSlug: 'sorting', name: 'Merge Sorted Array', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/merge-sorted-array/' },
+  { id: 'so-4', topicSlug: 'sorting', name: 'Sort List', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/sort-list/' },
+  { id: 'so-5', topicSlug: 'sorting', name: 'Largest Number', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/largest-number/' },
+  { id: 'so-6', topicSlug: 'sorting', name: 'Kth Largest Element in an Array', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/kth-largest-element-in-an-array/' },
+  { id: 'so-7', topicSlug: 'sorting', name: 'Wiggle Sort II', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/wiggle-sort-ii/' },
+  { id: 'so-8', topicSlug: 'sorting', name: 'Maximum Gap', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/maximum-gap/' },
+  { id: 'so-9', topicSlug: 'sorting', name: 'Insertion Sort List', difficulty: 'Medium', leetcodeUrl: 'https://leetcode.com/problems/insertion-sort-list/' },
+
   // Arrays & Hashing
   { id: 'ah-1', topicSlug: 'arrays-hashing', name: 'Contains Duplicate', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/contains-duplicate/' },
   { id: 'ah-2', topicSlug: 'arrays-hashing', name: 'Valid Anagram', difficulty: 'Easy', leetcodeUrl: 'https://leetcode.com/problems/valid-anagram/' },

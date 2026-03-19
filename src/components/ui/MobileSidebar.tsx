@@ -59,6 +59,14 @@ export default function MobileSidebar() {
               >
                 Roadmap
               </Link>
+              <Link
+                href="/topic/sorting"
+                className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+                  pathname === '/topic/sorting' ? 'bg-indigo-500/15 text-indigo-400' : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
+                }`}
+              >
+                Sorting Algorithms
+              </Link>
 
               {categories.map(category => (
                 <div key={category.name}>

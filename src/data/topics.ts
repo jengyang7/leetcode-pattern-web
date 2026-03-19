@@ -1,6 +1,7 @@
 import { Topic } from '@/types';
 
 export const topics: Topic[] = [
+  { id: 'sorting', slug: 'sorting', name: 'Sorting Algorithms', description: 'Comparison and non-comparison sorts — bubble, selection, insertion, merge, quick, heap, counting, and radix sort with tradeoffs.' },
   { id: 'arrays-hashing', slug: 'arrays-hashing', name: 'Arrays & Hashing', description: 'Fundamental data structures for counting, grouping, and fast lookups.' },
   { id: 'two-pointers', slug: 'two-pointers', name: 'Two Pointers', description: 'Scanning from both ends or with a fast/slow pointer to reduce nested loops.' },
   { id: 'stack', slug: 'stack', name: 'Stack', description: 'LIFO structure for matching, parsing, and monotonic-stack patterns.' },

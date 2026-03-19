@@ -41,6 +41,19 @@ export default function Sidebar() {
           </svg>
           Roadmap
         </Link>
+        <Link
+          href="/topic/sorting"
+          className={`flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors ${
+            pathname === '/topic/sorting'
+              ? 'bg-indigo-500/15 text-indigo-400'
+              : 'text-gray-400 hover:bg-gray-800/50 hover:text-gray-200'
+          }`}
+        >
+          <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3 7.5L7.5 3m0 0L12 7.5M7.5 3v13.5m13.5 0L16.5 21m0 0L12 16.5m4.5 4.5V7.5" />
+          </svg>
+          Sorting Algorithms
+        </Link>
 
         {categories.map(category => (
           <div key={category.name}>

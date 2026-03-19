@@ -16,6 +16,90 @@ export interface TopicExplanation {
 }
 
 export const explanations: Record<string, TopicExplanation> = {
+  'sorting': {
+    summary: 'Sorting is the foundation of many algorithms. Understanding different sorting algorithms — their time/space complexity, stability, and tradeoffs — is essential for choosing the right tool for each problem.',
+    approach: 'For most problems, Python\'s built-in sorted() (Timsort, O(n log n)) is the right choice. But understanding how sorts work helps you solve problems like Sort Colors (Dutch flag), find Kth element (quickselect), or handle custom ordering.',
+    keyInsight: 'No single sorting algorithm is best for all cases. Quick Sort is fastest on average, Merge Sort guarantees O(n log n) with stability, Insertion Sort wins on small/nearly-sorted data, and Counting/Radix Sort beat O(n log n) for integers with bounded range.',
+    timeComplexity: [
+      { operation: 'Bubble Sort', complexity: 'O(n²)', note: 'Simple but slow; O(n) best case if already sorted' },
+      { operation: 'Selection Sort', complexity: 'O(n²)', note: 'Always O(n²); minimizes swaps' },
+      { operation: 'Insertion Sort', complexity: 'O(n²)', note: 'O(n) best case; great for small/nearly-sorted arrays' },
+      { operation: 'Merge Sort', complexity: 'O(n log n)', note: 'Guaranteed; stable; O(n) extra space' },
+      { operation: 'Quick Sort', complexity: 'O(n log n) avg', note: 'O(n²) worst case; fastest in practice' },
+      { operation: 'Heap Sort', complexity: 'O(n log n)', note: 'Guaranteed; in-place O(1); poor cache locality' },
+      { operation: 'Counting Sort', complexity: 'O(n + k)', note: 'Linear when range k is O(n)' },
+      { operation: 'Radix Sort', complexity: 'O(d × n)', note: 'Linear when d (digits) is constant' },
+      { operation: 'Python sorted()', complexity: 'O(n log n)', note: 'Timsort — hybrid merge+insertion, stable' },
+    ],
+    whenToUse: [
+      'Need to organize data before applying other algorithms (binary search, two pointers)',
+      'Finding the Kth smallest/largest element — use quickselect O(n) avg',
+      'Custom ordering problems — use sorted() with key= parameter',
+      'Need stability (preserve relative order) — use merge sort or Timsort',
+      'Integer arrays with small range — counting sort for O(n) time',
+      'Linked list sorting — merge sort is ideal (O(1) space for linked lists)',
+    ],
+    commonMistakes: [
+      'Using O(n²) sorts on large data when O(n log n) alternatives exist',
+      'Forgetting that quicksort degrades to O(n²) on already-sorted data with naive pivot',
+      'Not considering stability — some problems require preserving relative order',
+      'Implementing sort from scratch when sorted() with key= would suffice',
+      'Confusing in-place vs stable — heap sort is in-place but not stable',
+    ],
+    visualization: {
+      type: 'comparison',
+      title: 'Quick Sort partitioning: partition array around pivot',
+      input: 'arr = [5, 3, 8, 1, 2], pivot = arr[2] = 8',
+      steps: [
+        { label: 'Choose pivot', state: '[5, 3, 8, 1, 2]  pivot = 8 (middle element)', highlight: 'Elements < pivot go left, > pivot go right' },
+        { label: 'Partition', state: 'left = [5, 3, 1, 2]  pivot = [8]  right = []', highlight: 'All elements < 8, so right is empty' },
+        { label: 'Recurse left: pivot = 1', state: '[5, 3, 1, 2] → left=[] pivot=[1] right=[5,3,2]', highlight: 'Partition around 1' },
+        { label: 'Recurse: pivot = 3', state: '[5, 3, 2] → left=[2] pivot=[3] right=[5]', highlight: 'Partition around 3' },
+        { label: 'Combine', state: '[] + [1] + [2] + [3] + [5] + [8] + []', highlight: 'Result: [1, 2, 3, 5, 8]' },
+      ],
+    },
+    codeTemplate: `# Python's built-in sort (Timsort) — use this in most cases
+arr.sort()                          # In-place, stable
+sorted_arr = sorted(arr)            # Returns new list, stable
+sorted(arr, key=lambda x: x[1])    # Custom sort key
+sorted(arr, reverse=True)           # Descending order
+
+# Quick Select — find Kth smallest in O(n) average
+import random
+def quick_select(arr, k):
+    pivot = random.choice(arr)
+    left = [x for x in arr if x < pivot]
+    mid = [x for x in arr if x == pivot]
+    right = [x for x in arr if x > pivot]
+
+    if k <= len(left):
+        return quick_select(left, k)
+    elif k <= len(left) + len(mid):
+        return pivot
+    else:
+        return quick_select(right, k - len(left) - len(mid))
+
+# Dutch National Flag (3-way partition) — Sort Colors
+def sort_colors(nums):
+    lo, mid, hi = 0, 0, len(nums) - 1
+    while mid <= hi:
+        if nums[mid] == 0:
+            nums[lo], nums[mid] = nums[mid], nums[lo]
+            lo += 1; mid += 1
+        elif nums[mid] == 1:
+            mid += 1
+        else:
+            nums[mid], nums[hi] = nums[hi], nums[mid]
+            hi -= 1`,
+    usefulSnippets: [
+      { name: 'Sort with key', code: "sorted(arr, key=lambda x: (-x[0], x[1]))\n# Sort by first desc, then second asc", note: 'Multi-criteria sorting' },
+      { name: 'Custom comparator', code: "from functools import cmp_to_key\ndef compare(a, b):\n    return -1 if a+b > b+a else 1\nsorted(strs, key=cmp_to_key(compare))", note: 'For Largest Number problem' },
+      { name: 'Counting sort (simple)', code: "count = [0] * (max(arr) + 1)\nfor x in arr: count[x] += 1\nsorted_arr = []\nfor i, c in enumerate(count):\n    sorted_arr.extend([i] * c)", note: 'O(n+k) for small integer range' },
+      { name: 'Bucket sort', code: "buckets = [[] for _ in range(n)]\nfor x in arr:\n    buckets[int(x * n)].append(x)\nfor b in buckets: b.sort()\nresult = [x for b in buckets for x in b]", note: 'O(n) avg for uniform distribution' },
+      { name: 'heapq for partial sort', code: "import heapq\nheapq.nsmallest(k, arr)  # k smallest\nheapq.nlargest(k, arr)   # k largest", note: 'O(n log k) — better than full sort for small k' },
+      { name: 'Merge two sorted lists', code: "import heapq\nresult = list(heapq.merge(sorted1, sorted2))", note: 'O(n) merge of pre-sorted iterables' },
+    ],
+  },
   'arrays-hashing': {
     summary: 'Arrays and hash maps are the foundation of most coding problems. Hash maps provide O(1) average lookup, making them ideal for counting frequencies, detecting duplicates, and grouping elements.',
     approach: 'When you see problems involving counting, grouping, or finding pairs/targets — think hash maps first. Sort the array when order matters. Use sets for uniqueness checks.',
