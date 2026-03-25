@@ -33,30 +33,58 @@ export default function TopicExplanation({ topicSlug }: { topicSlug: string }) {
       {/* Interactive Visualization */}
       <Visualization visualization={explanation.visualization} />
 
-      {/* Time Complexity */}
-      <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
-        <h2 className="text-lg font-semibold text-gray-100 mb-4">Time Complexity</h2>
-        <div className="overflow-x-auto">
-          <table className="w-full text-sm">
-            <thead>
-              <tr className="border-b border-gray-800">
-                <th className="text-left py-2 pr-4 text-xs font-semibold uppercase tracking-wider text-gray-500">Operation</th>
-                <th className="text-left py-2 pr-4 text-xs font-semibold uppercase tracking-wider text-gray-500">Complexity</th>
-                <th className="text-left py-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Note</th>
-              </tr>
-            </thead>
-            <tbody>
-              {explanation.timeComplexity.map((tc, i) => (
-                <tr key={i} className="border-b border-gray-800/50">
-                  <td className="py-2.5 pr-4 text-gray-300">{tc.operation}</td>
-                  <td className="py-2.5 pr-4">
-                    <code className="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-mono text-indigo-400">{tc.complexity}</code>
-                  </td>
-                  <td className="py-2.5 text-gray-500 text-xs">{tc.note}</td>
+      {/* Time & Space Complexity */}
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
+          <h2 className="text-lg font-semibold text-gray-100 mb-4">Time Complexity</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-800">
+                  <th className="text-left py-2 pr-4 text-xs font-semibold uppercase tracking-wider text-gray-500">Operation</th>
+                  <th className="text-left py-2 pr-4 text-xs font-semibold uppercase tracking-wider text-gray-500">Complexity</th>
+                  <th className="text-left py-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Note</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {explanation.timeComplexity.map((tc, i) => (
+                  <tr key={i} className="border-b border-gray-800/50">
+                    <td className="py-2.5 pr-4 text-gray-300">{tc.operation}</td>
+                    <td className="py-2.5 pr-4">
+                      <code className="rounded bg-indigo-500/10 px-2 py-0.5 text-xs font-mono text-indigo-400">{tc.complexity}</code>
+                    </td>
+                    <td className="py-2.5 text-gray-500 text-xs">{tc.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
+          <h2 className="text-lg font-semibold text-gray-100 mb-4">Space Complexity</h2>
+          <div className="overflow-x-auto">
+            <table className="w-full text-sm">
+              <thead>
+                <tr className="border-b border-gray-800">
+                  <th className="text-left py-2 pr-4 text-xs font-semibold uppercase tracking-wider text-gray-500">Operation</th>
+                  <th className="text-left py-2 pr-4 text-xs font-semibold uppercase tracking-wider text-gray-500">Complexity</th>
+                  <th className="text-left py-2 text-xs font-semibold uppercase tracking-wider text-gray-500">Note</th>
+                </tr>
+              </thead>
+              <tbody>
+                {explanation.spaceComplexity.map((sc, i) => (
+                  <tr key={i} className="border-b border-gray-800/50">
+                    <td className="py-2.5 pr-4 text-gray-300">{sc.operation}</td>
+                    <td className="py-2.5 pr-4">
+                      <code className="rounded bg-emerald-500/10 px-2 py-0.5 text-xs font-mono text-emerald-400">{sc.complexity}</code>
+                    </td>
+                    <td className="py-2.5 text-gray-500 text-xs">{sc.note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
 

@@ -3,6 +3,7 @@ export interface TopicExplanation {
   approach: string;
   keyInsight: string;
   timeComplexity: { operation: string; complexity: string; note: string }[];
+  spaceComplexity: { operation: string; complexity: string; note: string }[];
   whenToUse: string[];
   commonMistakes: string[];
   visualization: {
@@ -30,6 +31,17 @@ export const explanations: Record<string, TopicExplanation> = {
       { operation: 'Counting Sort', complexity: 'O(n + k)', note: 'Linear when range k is O(n)' },
       { operation: 'Radix Sort', complexity: 'O(d × n)', note: 'Linear when d (digits) is constant' },
       { operation: 'Python sorted()', complexity: 'O(n log n)', note: 'Timsort — hybrid merge+insertion, stable' },
+    ],
+    spaceComplexity: [
+      { operation: 'Bubble Sort', complexity: 'O(1)', note: 'In-place, only swaps adjacent elements' },
+      { operation: 'Selection Sort', complexity: 'O(1)', note: 'In-place, swaps min element into position' },
+      { operation: 'Insertion Sort', complexity: 'O(1)', note: 'In-place, shifts elements right' },
+      { operation: 'Merge Sort', complexity: 'O(n)', note: 'Requires auxiliary array for merging' },
+      { operation: 'Quick Sort', complexity: 'O(log n)', note: 'Recursion stack depth (avg); O(n) worst case' },
+      { operation: 'Heap Sort', complexity: 'O(1)', note: 'In-place using array as heap' },
+      { operation: 'Counting Sort', complexity: 'O(n + k)', note: 'Count array of size k + output array' },
+      { operation: 'Radix Sort', complexity: 'O(n + k)', note: 'Uses counting sort as subroutine' },
+      { operation: 'Python sorted()', complexity: 'O(n)', note: 'Timsort uses temporary merge space' },
     ],
     whenToUse: [
       'Need to organize data before applying other algorithms (binary search, two pointers)',
@@ -110,6 +122,12 @@ def sort_colors(nums):
       { operation: 'Array search (unsorted)', complexity: 'O(n)', note: 'Must scan all elements' },
       { operation: 'Sorting', complexity: 'O(n log n)', note: 'Often a useful preprocessing step' },
     ],
+    spaceComplexity: [
+      { operation: 'Hash Map', complexity: 'O(n)', note: 'Stores up to n key-value pairs' },
+      { operation: 'Hash Set', complexity: 'O(n)', note: 'Stores up to n unique elements' },
+      { operation: 'Counter / frequency map', complexity: 'O(n)', note: 'At most n distinct keys' },
+      { operation: 'Result array', complexity: 'O(n)', note: 'Output storage (often not counted)' },
+    ],
     whenToUse: [
       'Need to find pairs/groups that satisfy a condition (e.g., Two Sum)',
       'Counting frequency of elements',
@@ -160,6 +178,11 @@ count = Counter(nums)  # {val: freq}`,
       { operation: 'Two pointer scan', complexity: 'O(n)', note: 'Each pointer moves at most n steps' },
       { operation: 'Sorting prerequisite', complexity: 'O(n log n)', note: 'Often dominates overall complexity' },
       { operation: 'Fast/slow pointer', complexity: 'O(n)', note: 'Cycle detection in linked lists' },
+    ],
+    spaceComplexity: [
+      { operation: 'Two pointer scan', complexity: 'O(1)', note: 'Only two pointer variables' },
+      { operation: 'With sorting', complexity: 'O(1) to O(n)', note: 'Depends on sort implementation (in-place or not)' },
+      { operation: 'Fast/slow pointer', complexity: 'O(1)', note: 'Only two pointer variables' },
     ],
     whenToUse: [
       'Finding pairs in a sorted array that sum to a target',
@@ -228,6 +251,11 @@ def three_sum(nums):
       { operation: 'Monotonic stack (full pass)', complexity: 'O(n)', note: 'Each element pushed and popped at most once' },
       { operation: 'Parentheses matching', complexity: 'O(n)', note: 'Single pass through string' },
     ],
+    spaceComplexity: [
+      { operation: 'Stack storage', complexity: 'O(n)', note: 'Worst case: all elements pushed (e.g., all open brackets)' },
+      { operation: 'Monotonic stack', complexity: 'O(n)', note: 'At most n elements on the stack' },
+      { operation: 'Result array', complexity: 'O(n)', note: 'Storing answer for each element' },
+    ],
     whenToUse: [
       'Matching brackets, parentheses, or tags',
       'Finding the next greater/smaller element for each position',
@@ -289,6 +317,11 @@ def is_valid(s):
       { operation: 'Binary search', complexity: 'O(log n)', note: 'Halves search space each iteration' },
       { operation: 'Binary search on answer', complexity: 'O(n log M)', note: 'M = range of answer space, n = verification cost' },
       { operation: 'Lower/upper bound', complexity: 'O(log n)', note: 'Finding first/last occurrence' },
+    ],
+    spaceComplexity: [
+      { operation: 'Iterative binary search', complexity: 'O(1)', note: 'Only lo, hi, mid variables' },
+      { operation: 'Recursive binary search', complexity: 'O(log n)', note: 'Recursion stack depth' },
+      { operation: 'Binary search on answer', complexity: 'O(1)', note: 'Search space is implicit, not stored' },
     ],
     whenToUse: [
       'Searching in a sorted array or matrix',
@@ -353,6 +386,11 @@ def can_finish(piles, speed, h):
       { operation: 'Variable-size window', complexity: 'O(n)', note: 'Each pointer moves at most n steps total' },
       { operation: 'Window with hash map', complexity: 'O(n)', note: 'Hash map ops are O(1) amortized' },
     ],
+    spaceComplexity: [
+      { operation: 'Fixed-size window', complexity: 'O(1)', note: 'Only tracking window sum/count' },
+      { operation: 'Variable window (set)', complexity: 'O(min(n, m))', note: 'm = size of character set (e.g., 26 for lowercase)' },
+      { operation: 'Window with hash map', complexity: 'O(min(n, m))', note: 'At most m distinct keys in the window' },
+    ],
     whenToUse: [
       'Finding longest/shortest substring with some constraint',
       'Maximum sum subarray of fixed size k',
@@ -413,6 +451,12 @@ def max_sum_subarray(nums, k):
       { operation: 'Insert/delete at known position', complexity: 'O(1)', note: 'Just pointer manipulation' },
       { operation: 'Reversal', complexity: 'O(n)', note: 'Single pass through the list' },
       { operation: 'Find middle (fast/slow)', complexity: 'O(n)', note: 'Fast pointer moves 2x speed' },
+    ],
+    spaceComplexity: [
+      { operation: 'Reversal (iterative)', complexity: 'O(1)', note: 'Only prev, curr, next pointers' },
+      { operation: 'Reversal (recursive)', complexity: 'O(n)', note: 'Recursion stack depth' },
+      { operation: 'Fast/slow pointers', complexity: 'O(1)', note: 'Only two pointer variables' },
+      { operation: 'Merge sort on list', complexity: 'O(log n)', note: 'Recursion stack; no extra array needed' },
     ],
     whenToUse: [
       'Need O(1) insertion/deletion at arbitrary positions (with pointer)',
@@ -481,6 +525,11 @@ def has_cycle(head):
       { operation: 'BST search/insert', complexity: 'O(h)', note: 'h = height, O(log n) if balanced' },
       { operation: 'BST worst case', complexity: 'O(n)', note: 'Degenerate tree (linked list shape)' },
     ],
+    spaceComplexity: [
+      { operation: 'DFS (recursive)', complexity: 'O(h)', note: 'h = height; O(log n) balanced, O(n) skewed' },
+      { operation: 'BFS (queue)', complexity: 'O(w)', note: 'w = max width of tree; up to O(n/2) for complete tree' },
+      { operation: 'Store all nodes', complexity: 'O(n)', note: 'Level-order result, inorder traversal list, etc.' },
+    ],
     whenToUse: [
       'Problems involving hierarchical structures',
       'Need to process all paths from root to leaves',
@@ -540,6 +589,11 @@ def level_order(root):
       { operation: 'Search a word', complexity: 'O(L)', note: 'Traverse L characters' },
       { operation: 'Prefix search', complexity: 'O(P)', note: 'P = prefix length, then DFS for all matches' },
       { operation: 'Space', complexity: 'O(N × L)', note: 'N words of average length L' },
+    ],
+    spaceComplexity: [
+      { operation: 'Trie storage', complexity: 'O(N × L)', note: 'N words of average length L; shared prefixes reduce actual usage' },
+      { operation: 'Search / insert', complexity: 'O(1)', note: 'No extra space beyond the trie itself' },
+      { operation: 'DFS on trie', complexity: 'O(L)', note: 'Recursion depth = max word length' },
     ],
     whenToUse: [
       'Autocomplete or prefix-based search',
@@ -609,6 +663,12 @@ class Trie:
       { operation: 'Permutations', complexity: 'O(n!)', note: 'n choices for first, n-1 for second, etc.' },
       { operation: 'Combination Sum', complexity: 'O(2^t)', note: 't = target/min_candidate' },
       { operation: 'N-Queens', complexity: 'O(n!)', note: 'With pruning, much faster in practice' },
+    ],
+    spaceComplexity: [
+      { operation: 'Subsets', complexity: 'O(n)', note: 'Recursion depth + current path (output excluded)' },
+      { operation: 'Permutations', complexity: 'O(n)', note: 'Recursion depth n + path of length n' },
+      { operation: 'Combination Sum', complexity: 'O(t)', note: 't = target/min_candidate (max recursion depth)' },
+      { operation: 'N-Queens', complexity: 'O(n)', note: 'Board state + sets for columns/diagonals' },
     ],
     whenToUse: [
       'Generate all subsets, permutations, or combinations',
@@ -692,6 +752,11 @@ def combination_sum(candidates, target):
       { operation: 'Peek min/max', complexity: 'O(1)', note: 'Root element is always min/max' },
       { operation: 'Build heap from array', complexity: 'O(n)', note: 'Heapify is O(n), not O(n log n)' },
     ],
+    spaceComplexity: [
+      { operation: 'Heap of size K', complexity: 'O(k)', note: 'Top-K problems maintain a heap of size k' },
+      { operation: 'Full heap', complexity: 'O(n)', note: 'Heap storing all n elements' },
+      { operation: 'Two-heap median', complexity: 'O(n)', note: 'Both heaps together hold all n elements' },
+    ],
     whenToUse: [
       'Finding top K or bottom K elements',
       'Merging K sorted lists/streams',
@@ -759,6 +824,13 @@ def merge_k_lists(lists):
       { operation: 'Topological Sort', complexity: 'O(V + E)', note: 'DFS + reverse postorder, or Kahn\'s BFS' },
       { operation: 'Grid traversal', complexity: 'O(m × n)', note: 'Visit each cell once' },
       { operation: 'Build adjacency list', complexity: 'O(E)', note: 'One pass through edge list' },
+    ],
+    spaceComplexity: [
+      { operation: 'Adjacency list', complexity: 'O(V + E)', note: 'Store all vertices and edges' },
+      { operation: 'Visited set', complexity: 'O(V)', note: 'Track visited nodes' },
+      { operation: 'BFS queue', complexity: 'O(V)', note: 'Worst case: all nodes in queue at once' },
+      { operation: 'DFS recursion stack', complexity: 'O(V)', note: 'Worst case: linear chain graph' },
+      { operation: 'Grid (in-place marking)', complexity: 'O(1)', note: 'Modify grid directly to mark visited' },
     ],
     whenToUse: [
       'Finding connected components or islands',
@@ -847,6 +919,12 @@ def topo_sort(n, edges):
       { operation: 'LIS (optimized)', complexity: 'O(n log n)', note: 'Patience sorting with binary search' },
       { operation: 'Space optimization', complexity: 'O(1)', note: 'When dp[i] depends only on dp[i-1], dp[i-2]' },
     ],
+    spaceComplexity: [
+      { operation: 'Full DP array', complexity: 'O(n)', note: 'Store dp[0..n]' },
+      { operation: 'Space-optimized', complexity: 'O(1)', note: 'Only keep prev1, prev2 variables' },
+      { operation: 'Coin Change', complexity: 'O(n)', note: 'DP array of size amount+1' },
+      { operation: 'LIS (binary search)', complexity: 'O(n)', note: 'Tails array up to length n' },
+    ],
     whenToUse: [
       '"How many ways" or "minimum/maximum cost" to reach a state',
       'Problem has overlapping subproblems (same subproblem solved multiple times)',
@@ -913,6 +991,11 @@ def rob(nums):
       { operation: 'Insert interval', complexity: 'O(n)', note: 'If already sorted, single pass' },
       { operation: 'Meeting rooms (min rooms)', complexity: 'O(n log n)', note: 'Sort + sweep or min-heap' },
     ],
+    spaceComplexity: [
+      { operation: 'Merge intervals', complexity: 'O(n)', note: 'Merged result list (worst case: no overlaps)' },
+      { operation: 'Meeting rooms (sweep)', complexity: 'O(n)', note: 'Sorted start/end arrays' },
+      { operation: 'Meeting rooms (heap)', complexity: 'O(n)', note: 'Min-heap of end times' },
+    ],
     whenToUse: [
       'Merging overlapping intervals',
       'Finding free time / gaps between intervals',
@@ -978,6 +1061,11 @@ def min_meeting_rooms(intervals):
       { operation: 'Jump Game', complexity: 'O(n)', note: 'Single pass tracking farthest reach' },
       { operation: 'Activity Selection', complexity: 'O(n log n)', note: 'Sort by end time + greedy pick' },
       { operation: 'Partition Labels', complexity: 'O(n)', note: 'Track last occurrence, then partition' },
+    ],
+    spaceComplexity: [
+      { operation: 'Jump Game', complexity: 'O(1)', note: 'Only tracking maxReach variable' },
+      { operation: 'Activity Selection', complexity: 'O(n)', note: 'Result list of selected activities' },
+      { operation: 'Partition Labels', complexity: 'O(1)', note: 'Last-occurrence map is O(26) for lowercase letters' },
     ],
     whenToUse: [
       'Optimization problems where local best = global best',
@@ -1049,6 +1137,12 @@ def partition_labels(s):
       { operation: 'Bellman-Ford', complexity: 'O(V × E)', note: 'Handles negative weights' },
       { operation: 'Kruskal\'s MST', complexity: 'O(E log E)', note: 'Sort edges + Union-Find' },
       { operation: 'Union-Find (optimized)', complexity: 'O(α(n)) ≈ O(1)', note: 'Path compression + union by rank' },
+    ],
+    spaceComplexity: [
+      { operation: 'Dijkstra', complexity: 'O(V + E)', note: 'Adjacency list + dist array + heap' },
+      { operation: 'Bellman-Ford', complexity: 'O(V)', note: 'Distance array only' },
+      { operation: 'Kruskal\'s MST', complexity: 'O(V + E)', note: 'Union-Find + sorted edges' },
+      { operation: 'Union-Find', complexity: 'O(V)', note: 'Parent and rank arrays' },
     ],
     whenToUse: [
       'Shortest path with weighted edges (Dijkstra)',
@@ -1131,6 +1225,11 @@ class UnionFind:
       { operation: '0/1 Knapsack', complexity: 'O(n × W)', note: 'n items, W capacity' },
       { operation: 'Space optimization', complexity: 'O(min(m,n))', note: 'Only keep previous row' },
     ],
+    spaceComplexity: [
+      { operation: 'Full 2D table', complexity: 'O(m × n)', note: 'Standard dp[m+1][n+1] table' },
+      { operation: 'Space-optimized', complexity: 'O(min(m, n))', note: 'Only store previous row' },
+      { operation: 'Grid path (in-place)', complexity: 'O(1)', note: 'Modify input grid directly if allowed' },
+    ],
     whenToUse: [
       'Comparing two strings (LCS, edit distance, interleaving)',
       'Grid path problems (unique paths, min path sum)',
@@ -1204,6 +1303,12 @@ def min_distance(word1, word2):
       { operation: 'Find single number (XOR)', complexity: 'O(n)', note: 'XOR all elements, pairs cancel' },
       { operation: 'Counting bits 0..n', complexity: 'O(n)', note: 'DP: bits[i] = bits[i>>1] + (i&1)' },
     ],
+    spaceComplexity: [
+      { operation: 'Single number (XOR)', complexity: 'O(1)', note: 'Only one result variable' },
+      { operation: 'Count set bits', complexity: 'O(1)', note: 'Only a counter variable' },
+      { operation: 'Counting bits 0..n', complexity: 'O(n)', note: 'Output array of size n+1' },
+      { operation: 'Bitmask DP', complexity: 'O(2^n)', note: 'State space for n-element subset problems' },
+    ],
     whenToUse: [
       'Finding the element that appears once (all others appear twice)',
       'Checking if a number is a power of 2: n & (n-1) == 0',
@@ -1270,6 +1375,12 @@ def get_sum(a, b):
       { operation: 'Spiral traversal', complexity: 'O(m × n)', note: 'Visit each element once' },
       { operation: 'GCD (Euclidean)', complexity: 'O(log min(a,b))', note: 'Very efficient' },
       { operation: 'Sieve of Eratosthenes', complexity: 'O(n log log n)', note: 'Find all primes up to n' },
+    ],
+    spaceComplexity: [
+      { operation: 'Rotate matrix (in-place)', complexity: 'O(1)', note: 'Transpose + reverse, no extra matrix' },
+      { operation: 'Spiral traversal', complexity: 'O(1)', note: 'Only boundary pointers (excluding output)' },
+      { operation: 'Sieve of Eratosthenes', complexity: 'O(n)', note: 'Boolean array of size n' },
+      { operation: 'GCD (Euclidean)', complexity: 'O(1)', note: 'Iterative, constant extra space' },
     ],
     whenToUse: [
       'Matrix transformations (rotate, spiral, set zeroes)',
