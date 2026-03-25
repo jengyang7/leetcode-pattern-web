@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import Link from 'next/link';
 import { explanations, TopicExplanation as TopicExplanationType } from '@/data/explanations';
 
 export default function TopicExplanation({ topicSlug }: { topicSlug: string }) {
@@ -94,6 +95,26 @@ export default function TopicExplanation({ topicSlug }: { topicSlug: string }) {
       {/* Useful Snippets */}
       <UsefulSnippets snippets={explanation.usefulSnippets} />
 
+      {/* Pattern Recognition */}
+      <div className="rounded-xl border border-yellow-500/20 bg-gradient-to-br from-yellow-950/20 to-orange-950/10 p-6">
+        <h2 className="text-lg font-semibold text-gray-100 mb-4 flex items-center gap-2">
+          <svg className="w-5 h-5 text-yellow-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M12 18v-5.25m0 0a6.01 6.01 0 001.5-.189m-1.5.189a6.01 6.01 0 01-1.5-.189m3.75 7.478a12.06 12.06 0 01-4.5 0m3.75 2.383a14.406 14.406 0 01-3 0M14.25 18v-.192c0-.983.658-1.823 1.508-2.316a7.5 7.5 0 10-7.517 0c.85.493 1.509 1.333 1.509 2.316V18" />
+          </svg>
+          Pattern Recognition
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-2">
+          {explanation.patternRecognition.map((pr, i) => (
+            <div key={i} className="rounded-lg border border-gray-800/80 bg-gray-950/50 p-3">
+              <div className="text-xs text-yellow-400/80 mb-1.5 font-medium">If you see...</div>
+              <p className="text-sm text-gray-300 mb-2">&ldquo;{pr.signal}&rdquo;</p>
+              <div className="text-xs text-emerald-400/80 mb-1 font-medium">Think...</div>
+              <p className="text-sm text-emerald-300/90">{pr.pattern}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
       {/* When to Use + Common Mistakes */}
       <div className="grid gap-6 md:grid-cols-2">
         <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
@@ -128,6 +149,28 @@ export default function TopicExplanation({ topicSlug }: { topicSlug: string }) {
               </li>
             ))}
           </ul>
+        </div>
+      </div>
+
+      {/* Related Patterns */}
+      <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-6">
+        <h2 className="text-lg font-semibold text-gray-100 mb-4 flex items-center gap-2">
+          <svg className="w-5 h-5 text-purple-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M13.19 8.688a4.5 4.5 0 011.242 7.244l-4.5 4.5a4.5 4.5 0 01-6.364-6.364l1.757-1.757m9.86-2.07a4.5 4.5 0 00-1.242-7.244l-4.5-4.5a4.5 4.5 0 00-6.364 6.364L4.34 8.374" />
+          </svg>
+          Related Patterns
+        </h2>
+        <div className="grid gap-3 sm:grid-cols-3">
+          {explanation.relatedPatterns.map((rp, i) => (
+            <Link
+              key={i}
+              href={`/topic/${rp.slug}`}
+              className="group rounded-lg border border-gray-800/80 bg-gray-950/50 p-4 hover:border-indigo-500/30 hover:bg-indigo-950/20 transition-colors"
+            >
+              <div className="text-sm font-medium text-indigo-400 group-hover:text-indigo-300 mb-1">{rp.name}</div>
+              <div className="text-xs text-gray-500">{rp.why}</div>
+            </Link>
+          ))}
         </div>
       </div>
     </div>

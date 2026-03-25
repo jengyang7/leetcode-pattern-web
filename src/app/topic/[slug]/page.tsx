@@ -9,6 +9,7 @@ import { getTopicProgress } from '@/lib/progress';
 import ProblemList from '@/components/topic/ProblemList';
 import TopicExplanation from '@/components/topic/TopicExplanation';
 import SortingComparison from '@/components/topic/SortingComparison';
+import ComparisonTable from '@/components/topic/ComparisonTable';
 import ProgressBar from '@/components/ui/ProgressBar';
 
 export default function TopicPage({ params }: { params: Promise<{ slug: string }> }) {
@@ -50,6 +51,7 @@ export default function TopicPage({ params }: { params: Promise<{ slug: string }
       <div className="space-y-8">
         <TopicExplanation topicSlug={slug} />
         {slug === 'sorting' && <SortingComparison />}
+        <ComparisonTable topicSlug={slug} />
         <ProblemList problems={problems} />
       </div>
     </main>

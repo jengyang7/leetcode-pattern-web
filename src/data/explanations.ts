@@ -14,6 +14,8 @@ export interface TopicExplanation {
   };
   codeTemplate: string;
   usefulSnippets: { name: string; code: string; note: string }[];
+  patternRecognition: { signal: string; pattern: string }[];
+  relatedPatterns: { slug: string; name: string; why: string }[];
 }
 
 export const explanations: Record<string, TopicExplanation> = {
@@ -111,6 +113,17 @@ def sort_colors(nums):
       { name: 'heapq for partial sort', code: "import heapq\nheapq.nsmallest(k, arr)  # k smallest\nheapq.nlargest(k, arr)   # k largest", note: 'O(n log k) — better than full sort for small k' },
       { name: 'Merge two sorted lists', code: "import heapq\nresult = list(heapq.merge(sorted1, sorted2))", note: 'O(n) merge of pre-sorted iterables' },
     ],
+    patternRecognition: [
+      { signal: 'Need to organize data before another algorithm', pattern: 'Sort as preprocessing, then binary search or two pointers' },
+      { signal: 'Find Kth smallest/largest element', pattern: 'Quickselect O(n) avg or heap O(n log k)' },
+      { signal: 'Custom ordering required', pattern: 'Python sorted() with key= parameter' },
+      { signal: 'Need stable sort (preserve relative order)', pattern: 'Merge sort or Timsort (Python built-in)' },
+    ],
+    relatedPatterns: [
+      { slug: 'binary-search', name: 'Binary Search', why: 'Binary search requires sorted input' },
+      { slug: 'two-pointers', name: 'Two Pointers', why: 'Many two-pointer techniques need sorted arrays' },
+      { slug: 'heap', name: 'Heap / Priority Queue', why: 'Heaps provide partial sorting for top-K problems' },
+    ],
   },
   'arrays-hashing': {
     summary: 'Arrays and hash maps are the foundation of most coding problems. Hash maps provide O(1) average lookup, making them ideal for counting frequencies, detecting duplicates, and grouping elements.',
@@ -168,6 +181,17 @@ count = Counter(nums)  # {val: freq}`,
       { name: 'enumerate', code: 'for i, val in enumerate(arr):', note: 'Get index + value in one loop' },
       { name: 'sorted with key', code: "sorted(arr, key=lambda x: x[1])\nsorted(s, key=lambda c: count[c], reverse=True)", note: 'Custom sort criteria' },
       { name: 'zip', code: 'for a, b in zip(arr1, arr2):', note: 'Iterate two arrays in parallel' },
+    ],
+    patternRecognition: [
+      { signal: 'Find two numbers that sum to target', pattern: 'Hash map for O(1) complement lookup' },
+      { signal: 'Count frequency / find duplicates', pattern: 'Counter or hash set' },
+      { signal: 'Group elements by property', pattern: 'defaultdict(list) with computed key' },
+      { signal: 'Check if element exists in collection', pattern: 'Hash set for O(1) lookup' },
+    ],
+    relatedPatterns: [
+      { slug: 'two-pointers', name: 'Two Pointers', why: 'Two pointers on sorted arrays can replace hash maps' },
+      { slug: 'sliding-window', name: 'Sliding Window', why: 'Sliding windows often use hash maps for window state' },
+      { slug: 'sorting', name: 'Sorting Algorithms', why: 'Sorting is an alternative to hashing for some problems' },
     ],
   },
   'two-pointers': {
@@ -241,6 +265,17 @@ def three_sum(nums):
       { name: 'Palindrome check', code: 'def is_palindrome(s):\n    l, r = 0, len(s) - 1\n    while l < r:\n        if s[l] != s[r]: return False\n        l += 1; r -= 1\n    return True', note: 'Compare from both ends' },
       { name: 'Partition (remove in-place)', code: 'write = 0\nfor read in range(len(nums)):\n    if nums[read] != val:\n        nums[write] = nums[read]\n        write += 1', note: 'Fast/slow to remove elements' },
     ],
+    patternRecognition: [
+      { signal: 'Find pair with given sum in sorted array', pattern: 'Left/right pointers moving inward' },
+      { signal: 'Remove duplicates in-place', pattern: 'Fast/slow pointer (write pointer)' },
+      { signal: 'Is string a palindrome?', pattern: 'Compare from both ends' },
+      { signal: 'Merge two sorted arrays', pattern: 'Two pointers, one per array' },
+    ],
+    relatedPatterns: [
+      { slug: 'sorting', name: 'Sorting Algorithms', why: 'Often need to sort before applying two pointers' },
+      { slug: 'sliding-window', name: 'Sliding Window', why: 'Sliding window is a specialized two-pointer technique' },
+      { slug: 'linked-list', name: 'Linked List', why: 'Fast/slow pointers detect cycles and find midpoints' },
+    ],
   },
   'stack': {
     summary: 'Stacks excel at problems involving matching (parentheses), nearest greater/smaller elements (monotonic stack), and evaluating expressions. The LIFO property naturally handles nesting.',
@@ -307,6 +342,17 @@ def is_valid(s):
       { name: 'Monotonic decreasing', code: 'while stack and nums[i] > nums[stack[-1]]:\n    res[stack.pop()] = nums[i]\nstack.append(i)', note: 'Next greater element pattern' },
       { name: 'Monotonic increasing', code: 'while stack and nums[i] < nums[stack[-1]]:\n    res[stack.pop()] = nums[i]\nstack.append(i)', note: 'Next smaller element pattern' },
       { name: 'Bracket matching map', code: "pairs = {')': '(', ']': '[', '}': '{'}", note: 'Close→open bracket lookup' },
+    ],
+    patternRecognition: [
+      { signal: 'Match opening and closing brackets/tags', pattern: 'Push open, pop on close, check match' },
+      { signal: 'Next greater/smaller element', pattern: 'Monotonic stack' },
+      { signal: 'Evaluate expression (postfix/infix)', pattern: 'Operator stack with precedence' },
+      { signal: 'Undo last operation', pattern: 'Stack naturally handles LIFO undo' },
+    ],
+    relatedPatterns: [
+      { slug: 'trees', name: 'Trees', why: 'Iterative tree traversal uses an explicit stack' },
+      { slug: 'graphs', name: 'Graphs', why: 'Iterative DFS uses a stack' },
+      { slug: 'linked-list', name: 'Linked List', why: 'Stack can be implemented with a linked list' },
     ],
   },
   'binary-search': {
@@ -376,6 +422,17 @@ def can_finish(piles, speed, h):
       { name: 'Search on answer', code: 'lo, hi = min_possible, max_possible\nwhile lo < hi:\n    mid = (lo + hi) // 2\n    if feasible(mid):\n        hi = mid\n    else:\n        lo = mid + 1', note: 'Find minimum feasible answer' },
       { name: 'Rotated array pivot', code: 'if nums[mid] > nums[hi]:\n    lo = mid + 1  # min is in right half\nelse:\n    hi = mid      # min is in left half (or mid)', note: 'Find min in rotated sorted array' },
     ],
+    patternRecognition: [
+      { signal: 'Find element in sorted array', pattern: 'Classic binary search' },
+      { signal: 'Find first/last occurrence', pattern: 'Binary search with boundary condition' },
+      { signal: 'Minimize the maximum / maximize the minimum', pattern: 'Binary search on the answer' },
+      { signal: 'Search in rotated sorted array', pattern: 'Modified binary search with pivot detection' },
+    ],
+    relatedPatterns: [
+      { slug: 'sorting', name: 'Sorting Algorithms', why: 'Binary search requires sorted input' },
+      { slug: 'two-pointers', name: 'Two Pointers', why: 'Both exploit sorted order to reduce complexity' },
+      { slug: 'dp-1d', name: '1-D Dynamic Programming', why: 'LIS can be solved with binary search + DP' },
+    ],
   },
   'sliding-window': {
     summary: 'Sliding window maintains a contiguous subarray/substring that expands and contracts. It turns O(n²) substring enumeration into O(n) by reusing computation.',
@@ -440,6 +497,17 @@ def max_sum_subarray(nums, k):
       { name: 'Counter window', code: 'from collections import Counter\nwindow = Counter()\nwindow[s[r]] += 1\nif window[s[l]] == 1: del window[s[l]]\nelse: window[s[l]] -= 1', note: 'Track char frequencies in window' },
       { name: 'Window length', code: 'r - l + 1  # current window size', note: 'Inclusive both endpoints' },
       { name: 'min() / max()', code: 'max_len = max(max_len, r - l + 1)\nmin_len = min(min_len, r - l + 1)', note: 'Track best window seen' },
+    ],
+    patternRecognition: [
+      { signal: 'Longest/shortest substring with condition', pattern: 'Variable-size sliding window' },
+      { signal: 'Maximum sum of subarray size k', pattern: 'Fixed-size sliding window' },
+      { signal: 'Substring containing all characters of pattern', pattern: 'Window with character frequency map' },
+      { signal: 'Count subarrays with at most K distinct elements', pattern: 'Shrinkable sliding window' },
+    ],
+    relatedPatterns: [
+      { slug: 'two-pointers', name: 'Two Pointers', why: 'Sliding window is a two-pointer variant' },
+      { slug: 'arrays-hashing', name: 'Arrays & Hashing', why: 'Window state often tracked with hash maps' },
+      { slug: 'binary-search', name: 'Binary Search', why: 'Some window problems use binary search on window size' },
     ],
   },
   'linked-list': {
@@ -514,6 +582,17 @@ def has_cycle(head):
       { name: 'Reverse in-place', code: 'prev, curr = None, head\nwhile curr:\n    nxt = curr.next\n    curr.next = prev\n    prev = curr\n    curr = nxt', note: 'O(1) space reversal' },
       { name: 'Merge two sorted', code: 'dummy = ListNode(0)\ntail = dummy\nwhile l1 and l2:\n    if l1.val <= l2.val:\n        tail.next = l1; l1 = l1.next\n    else:\n        tail.next = l2; l2 = l2.next\n    tail = tail.next\ntail.next = l1 or l2', note: 'Merge sort merge step' },
     ],
+    patternRecognition: [
+      { signal: 'Reverse a linked list', pattern: 'Iterative three-pointer swap (prev, curr, next)' },
+      { signal: 'Detect cycle in linked list', pattern: 'Fast/slow pointer (Floyd\'s algorithm)' },
+      { signal: 'Find middle of linked list', pattern: 'Fast/slow pointer' },
+      { signal: 'Merge K sorted lists', pattern: 'Min-heap or divide and conquer' },
+    ],
+    relatedPatterns: [
+      { slug: 'two-pointers', name: 'Two Pointers', why: 'Fast/slow pointer is a two-pointer technique on lists' },
+      { slug: 'heap', name: 'Heap / Priority Queue', why: 'Heap merges K sorted lists efficiently' },
+      { slug: 'sorting', name: 'Sorting Algorithms', why: 'Merge sort is ideal for linked list sorting' },
+    ],
   },
   'trees': {
     summary: 'Tree problems are fundamentally about recursion. DFS (preorder, inorder, postorder) and BFS (level order) are the two main traversal strategies.',
@@ -578,6 +657,17 @@ def level_order(root):
       { name: 'BFS with deque', code: 'from collections import deque\nqueue = deque([root])\nwhile queue:\n    node = queue.popleft()\n    if node.left: queue.append(node.left)\n    if node.right: queue.append(node.right)', note: 'Level-order traversal' },
       { name: 'max() / min()', code: 'max(left_height, right_height) + 1\nmin(left_val, right_val)', note: 'Combine children results' },
       { name: 'Pass value down', code: 'def dfs(node, path_sum):\n    if not node: return\n    path_sum += node.val\n    dfs(node.left, path_sum)\n    dfs(node.right, path_sum)', note: 'Top-down DFS with accumulator' },
+    ],
+    patternRecognition: [
+      { signal: 'Process nodes level by level', pattern: 'BFS with queue' },
+      { signal: 'Compare/validate tree structure', pattern: 'Recursive DFS (same tree, subtree)' },
+      { signal: 'Find path sum or max path', pattern: 'DFS with accumulator' },
+      { signal: 'Serialize/deserialize a tree', pattern: 'Preorder DFS or BFS' },
+    ],
+    relatedPatterns: [
+      { slug: 'graphs', name: 'Graphs', why: 'Trees are special cases of graphs (connected, acyclic)' },
+      { slug: 'stack', name: 'Stack', why: 'Iterative DFS traversal uses a stack' },
+      { slug: 'backtracking', name: 'Backtracking', why: 'Tree path problems often use backtracking' },
     ],
   },
   'tries': {
@@ -652,6 +742,17 @@ class Trie:
       { name: 'TrieNode', code: 'class TrieNode:\n    def __init__(self):\n        self.children = {}  # char -> TrieNode\n        self.is_end = False', note: 'Basic trie node with dict children' },
       { name: 'Insert word', code: 'node = self.root\nfor c in word:\n    if c not in node.children:\n        node.children[c] = TrieNode()\n    node = node.children[c]\nnode.is_end = True', note: 'Create path char by char' },
       { name: 'Wildcard search', code: 'def search(node, word, i):\n    if i == len(word): return node.is_end\n    if word[i] == ".":\n        return any(search(c, word, i+1)\n                   for c in node.children.values())\n    if word[i] not in node.children: return False\n    return search(node.children[word[i]], word, i+1)', note: 'For "." wildcard matching' },
+    ],
+    patternRecognition: [
+      { signal: 'Autocomplete or prefix matching', pattern: 'Trie with prefix search' },
+      { signal: 'Word search in a grid', pattern: 'Trie + backtracking (prune branches)' },
+      { signal: 'Spell checker / dictionary lookup', pattern: 'Trie with end-of-word marking' },
+      { signal: 'Count words with common prefix', pattern: 'Trie with prefix count at each node' },
+    ],
+    relatedPatterns: [
+      { slug: 'backtracking', name: 'Backtracking', why: 'Word search combines trie with grid backtracking' },
+      { slug: 'trees', name: 'Trees', why: 'A trie is a specialized tree structure' },
+      { slug: 'arrays-hashing', name: 'Arrays & Hashing', why: 'Hash maps are an alternative for exact word lookup' },
     ],
   },
   'backtracking': {
@@ -741,6 +842,17 @@ def combination_sum(candidates, target):
       { name: 'path[:] copy', code: 'res.append(path[:])\n# or: res.append(list(path))', note: 'Always copy the path before appending to result' },
       { name: 'Early pruning', code: 'if candidates[i] > remain:\n    break  # remaining are even larger', note: 'Cut branches that can\'t lead to solution' },
     ],
+    patternRecognition: [
+      { signal: 'Generate all subsets/combinations', pattern: 'Backtracking with include/skip choice' },
+      { signal: 'Generate all permutations', pattern: 'Backtracking with used set' },
+      { signal: 'Solve constraint satisfaction (Sudoku, N-Queens)', pattern: 'Backtracking with validity check' },
+      { signal: 'Find all valid configurations', pattern: 'Backtracking with pruning' },
+    ],
+    relatedPatterns: [
+      { slug: 'trees', name: 'Trees', why: 'Backtracking explores a decision tree' },
+      { slug: 'graphs', name: 'Graphs', why: 'Grid/graph search often uses backtracking' },
+      { slug: 'dp-1d', name: '1-D Dynamic Programming', why: 'DP optimizes backtracking by caching results' },
+    ],
   },
   'heap': {
     summary: 'A heap (priority queue) provides O(log n) insert and O(1) access to the min or max element. Perfect for top-K, merge-K-sorted, and scheduling problems.',
@@ -813,6 +925,17 @@ def merge_k_lists(lists):
       { name: 'heapify', code: 'heapq.heapify(arr)  # O(n) in-place', note: 'Convert list to heap in linear time' },
       { name: 'nlargest / nsmallest', code: 'heapq.nlargest(k, arr)\nheapq.nsmallest(k, arr)', note: 'Quick top-K without manual heap' },
       { name: 'Tuple priority', code: 'heapq.heappush(heap, (priority, index, item))', note: 'Use tuple for custom ordering. Add index to break ties.' },
+    ],
+    patternRecognition: [
+      { signal: 'Find top K or bottom K elements', pattern: 'Min-heap of size K (top-K largest)' },
+      { signal: 'Merge K sorted lists/arrays', pattern: 'Min-heap pulling smallest from each' },
+      { signal: 'Running median of a stream', pattern: 'Two heaps: max-heap (low) + min-heap (high)' },
+      { signal: 'Task scheduling with priorities', pattern: 'Min-heap ordered by deadline/priority' },
+    ],
+    relatedPatterns: [
+      { slug: 'sorting', name: 'Sorting Algorithms', why: 'Heap sort uses heap property; partial sort via heap' },
+      { slug: 'advanced-graphs', name: 'Advanced Graphs', why: 'Dijkstra uses a min-heap for shortest path' },
+      { slug: 'linked-list', name: 'Linked List', why: 'Merge K sorted lists uses a heap' },
     ],
   },
   'graphs': {
@@ -908,6 +1031,17 @@ def topo_sort(n, edges):
       { name: 'Visited set', code: 'visited = set()\nvisited.add((r, c))  # for grids\nvisited.add(node)     # for graphs', note: 'Prevent revisiting nodes' },
       { name: 'BFS shortest path', code: 'queue = deque([(start, 0)])  # (node, distance)\nwhile queue:\n    node, dist = queue.popleft()\n    if node == target: return dist', note: 'Track distance in BFS' },
     ],
+    patternRecognition: [
+      { signal: 'Count connected components or islands', pattern: 'DFS/BFS from each unvisited node' },
+      { signal: 'Shortest path in unweighted graph', pattern: 'BFS (tracks distance by level)' },
+      { signal: 'Detect cycle in directed graph', pattern: 'DFS with 3 states: unvisited, in-progress, done' },
+      { signal: 'Task ordering / prerequisites', pattern: 'Topological sort (Kahn\'s BFS or DFS)' },
+    ],
+    relatedPatterns: [
+      { slug: 'trees', name: 'Trees', why: 'Trees are acyclic connected graphs' },
+      { slug: 'advanced-graphs', name: 'Advanced Graphs', why: 'Weighted graphs need Dijkstra/Bellman-Ford' },
+      { slug: 'backtracking', name: 'Backtracking', why: 'Finding all paths in a graph uses backtracking' },
+    ],
   },
   'dp-1d': {
     summary: '1-D DP problems have optimal substructure along a single dimension. The current answer depends on previous answers, building up from base cases.',
@@ -981,6 +1115,17 @@ def rob(nums):
       { name: 'max() in recurrence', code: 'dp[i] = max(dp[i-1], dp[i-2] + nums[i])', note: 'Take or skip pattern (House Robber)' },
       { name: 'LIS with bisect', code: 'import bisect\ntails = []\nfor num in nums:\n    pos = bisect.bisect_left(tails, num)\n    if pos == len(tails): tails.append(num)\n    else: tails[pos] = num\nreturn len(tails)', note: 'O(n log n) Longest Increasing Subsequence' },
     ],
+    patternRecognition: [
+      { signal: 'How many ways to reach step n?', pattern: 'Fibonacci-style DP: dp[i] = dp[i-1] + dp[i-2]' },
+      { signal: 'Minimum cost to reach end', pattern: 'DP with min over choices: dp[i] = min(dp[i-c] + cost)' },
+      { signal: 'Rob houses (can\'t pick adjacent)', pattern: 'Take/skip pattern: dp[i] = max(dp[i-1], dp[i-2]+val)' },
+      { signal: 'Longest increasing subsequence', pattern: 'DP O(n\u00b2) or binary search O(n log n)' },
+    ],
+    relatedPatterns: [
+      { slug: 'dp-2d', name: '2-D Dynamic Programming', why: '2D DP extends to two parameters or sequences' },
+      { slug: 'greedy', name: 'Greedy', why: 'If greedy works, it avoids DP overhead; DP when greedy fails' },
+      { slug: 'backtracking', name: 'Backtracking', why: 'DP optimizes brute-force backtracking via memoization' },
+    ],
   },
   'intervals': {
     summary: 'Interval problems involve ranges [start, end]. Sorting by start time (or end time) is almost always the first step, then sweep through with a greedy or merge approach.',
@@ -1051,6 +1196,17 @@ def min_meeting_rooms(intervals):
       { name: 'Sort by end', code: 'intervals.sort(key=lambda x: x[1])', note: 'For activity selection / scheduling' },
       { name: 'Overlap check', code: 'if a_start <= b_end and b_start <= a_end:\n    # intervals overlap', note: 'Two intervals overlap condition' },
       { name: 'Merge into last', code: 'merged[-1][1] = max(merged[-1][1], end)', note: 'Extend the last merged interval' },
+    ],
+    patternRecognition: [
+      { signal: 'Merge overlapping intervals', pattern: 'Sort by start, extend end if overlapping' },
+      { signal: 'Find minimum meeting rooms', pattern: 'Sort events + sweep line or min-heap' },
+      { signal: 'Insert interval into sorted list', pattern: 'Find overlap region, merge, reconstruct' },
+      { signal: 'Find free time / gaps', pattern: 'Merge intervals, then find gaps between them' },
+    ],
+    relatedPatterns: [
+      { slug: 'sorting', name: 'Sorting Algorithms', why: 'Interval problems almost always start with sorting' },
+      { slug: 'greedy', name: 'Greedy', why: 'Activity selection is a classic greedy interval problem' },
+      { slug: 'heap', name: 'Heap / Priority Queue', why: 'Meeting rooms uses a min-heap of end times' },
     ],
   },
   'greedy': {
@@ -1126,6 +1282,17 @@ def partition_labels(s):
       { name: 'Last occurrence map', code: 'last = {c: i for i, c in enumerate(s)}', note: 'Know the rightmost position of each element' },
       { name: 'max() for greedy pick', code: 'best = max(choices, key=lambda x: criteria(x))', note: 'Pick the locally optimal option' },
       { name: 'Greedy interval select', code: 'intervals.sort(key=lambda x: x[1])  # by end\nend = float("-inf")\ncount = 0\nfor s, e in intervals:\n    if s >= end:\n        count += 1; end = e', note: 'Max non-overlapping intervals' },
+    ],
+    patternRecognition: [
+      { signal: 'Can you reach the end? / minimum jumps', pattern: 'Track farthest reachable position' },
+      { signal: 'Maximum non-overlapping intervals', pattern: 'Sort by end time, greedily pick' },
+      { signal: 'Partition into minimum groups', pattern: 'Sort + greedy assignment' },
+      { signal: 'Assign tasks to minimize cost', pattern: 'Sort by some criteria, assign greedily' },
+    ],
+    relatedPatterns: [
+      { slug: 'dp-1d', name: '1-D Dynamic Programming', why: 'When greedy doesn\'t work, DP is the fallback' },
+      { slug: 'intervals', name: 'Intervals', why: 'Interval scheduling is a classic greedy problem' },
+      { slug: 'sorting', name: 'Sorting Algorithms', why: 'Greedy often requires sorting as first step' },
     ],
   },
   'advanced-graphs': {
@@ -1214,6 +1381,17 @@ class UnionFind:
       { name: 'Kruskal MST', code: 'edges.sort(key=lambda x: x[2])  # by weight\nuf = UnionFind(n)\nmst_cost = 0\nfor u, v, w in edges:\n    if uf.union(u, v):\n        mst_cost += w', note: 'Sort edges + union-find' },
       { name: 'Bellman-Ford', code: 'dist = [float("inf")] * n\ndist[src] = 0\nfor _ in range(n - 1):\n    for u, v, w in edges:\n        if dist[u] + w < dist[v]:\n            dist[v] = dist[u] + w', note: 'Handles negative weights' },
     ],
+    patternRecognition: [
+      { signal: 'Shortest path with weighted edges', pattern: 'Dijkstra (non-negative weights)' },
+      { signal: 'Shortest path with negative edges', pattern: 'Bellman-Ford' },
+      { signal: 'Connect all nodes with minimum cost', pattern: 'MST: Kruskal (sparse) or Prim (dense)' },
+      { signal: 'Dynamic connectivity / union components', pattern: 'Union-Find with path compression' },
+    ],
+    relatedPatterns: [
+      { slug: 'graphs', name: 'Graphs', why: 'Basic BFS/DFS are prerequisite graph skills' },
+      { slug: 'heap', name: 'Heap / Priority Queue', why: 'Dijkstra and Prim use min-heaps' },
+      { slug: 'greedy', name: 'Greedy', why: 'Dijkstra and Kruskal are greedy algorithms' },
+    ],
   },
   'dp-2d': {
     summary: '2-D DP problems involve two dimensions — often two strings, a grid, or two parameters. The state space is a 2D table where dp[i][j] depends on neighboring cells.',
@@ -1292,6 +1470,17 @@ def min_distance(word1, word2):
       { name: 'min of 3 choices', code: 'dp[i][j] = 1 + min(\n    dp[i-1][j],    # delete\n    dp[i][j-1],    # insert\n    dp[i-1][j-1]   # replace\n)', note: 'Edit distance recurrence' },
       { name: 'Space optimize to 1D', code: 'prev = [0] * (n+1)\nfor i in range(1, m+1):\n    curr = [0] * (n+1)\n    for j in range(1, n+1):\n        # fill curr[j]\n    prev = curr', note: 'Only keep previous row' },
     ],
+    patternRecognition: [
+      { signal: 'Compare two strings (LCS, edit distance)', pattern: '2D DP: dp[i][j] on string indices' },
+      { signal: 'Count paths in a grid', pattern: '2D DP: dp[i][j] = dp[i-1][j] + dp[i][j-1]' },
+      { signal: 'Knapsack / subset sum', pattern: '2D DP: dp[i][w] for items \u00d7 capacity' },
+      { signal: 'Stock trading with cooldown/limit', pattern: 'State machine DP with hold/sell/rest states' },
+    ],
+    relatedPatterns: [
+      { slug: 'dp-1d', name: '1-D Dynamic Programming', why: '1D DP is a simpler version of the same technique' },
+      { slug: 'greedy', name: 'Greedy', why: 'Some 2D DP problems have greedy shortcuts' },
+      { slug: 'backtracking', name: 'Backtracking', why: 'DP memoizes what backtracking explores exhaustively' },
+    ],
   },
   'bit-manipulation': {
     summary: 'Bit manipulation uses bitwise operators (AND, OR, XOR, shift) for efficient computation. XOR is especially useful: a ^ a = 0, a ^ 0 = a.',
@@ -1364,6 +1553,17 @@ def get_sum(a, b):
       { name: 'Set/clear/toggle', code: 'n | (1 << i)   # set bit i\nn & ~(1 << i)  # clear bit i\nn ^ (1 << i)   # toggle bit i', note: 'Bit manipulation primitives' },
       { name: 'Check bit', code: 'if n & (1 << i):  # bit i is set\nbool(n & (1 << i))', note: 'Test if a specific bit is 1' },
       { name: 'bin()', code: 'bin(10)   # "0b1010"\nbin(10).count("1")  # 2 set bits', note: 'Quick bit visualization in Python' },
+    ],
+    patternRecognition: [
+      { signal: 'Find the number appearing once (others twice)', pattern: 'XOR all elements \u2014 pairs cancel' },
+      { signal: 'Check if number is power of 2', pattern: 'n & (n-1) == 0' },
+      { signal: 'Count set bits / hamming weight', pattern: 'Brian Kernighan: n &= n-1 loop' },
+      { signal: 'Represent subsets as integers', pattern: 'Bitmask: bit i set = element i included' },
+    ],
+    relatedPatterns: [
+      { slug: 'arrays-hashing', name: 'Arrays & Hashing', why: 'Bit manipulation can replace hash sets for small domains' },
+      { slug: 'math-geometry', name: 'Math & Geometry', why: 'Both rely on mathematical properties' },
+      { slug: 'backtracking', name: 'Backtracking', why: 'Bitmask DP is an alternative to backtracking for subsets' },
     ],
   },
   'math-geometry': {
@@ -1438,6 +1638,17 @@ def spiral_order(matrix):
       { name: 'Happy number cycle', code: 'def digit_sum_sq(n):\n    s = 0\n    while n:\n        n, d = divmod(n, 10)\n        s += d * d\n    return s', note: 'Sum of squared digits' },
       { name: 'divmod', code: 'quotient, remainder = divmod(n, 10)', note: 'Get both quotient and remainder at once' },
       { name: 'abs() / math.sqrt()', code: 'dist = math.sqrt((x2-x1)**2 + (y2-y1)**2)\n# or squared distance to avoid float:\ndist_sq = (x2-x1)**2 + (y2-y1)**2', note: 'Euclidean distance' },
+    ],
+    patternRecognition: [
+      { signal: 'Rotate matrix 90\u00b0', pattern: 'Transpose + reverse rows (in-place)' },
+      { signal: 'Spiral order traversal', pattern: 'Track four boundaries, shrink inward' },
+      { signal: 'Check if number is happy/palindrome', pattern: 'Digit manipulation with divmod' },
+      { signal: 'Find all primes up to n', pattern: 'Sieve of Eratosthenes' },
+    ],
+    relatedPatterns: [
+      { slug: 'bit-manipulation', name: 'Bit Manipulation', why: 'Both use mathematical properties for optimization' },
+      { slug: 'arrays-hashing', name: 'Arrays & Hashing', why: 'Matrix problems are 2D array operations' },
+      { slug: 'dp-2d', name: '2-D Dynamic Programming', why: 'Grid path problems bridge math and DP' },
     ],
   },
 };
